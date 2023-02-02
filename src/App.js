@@ -2,7 +2,12 @@ import React, { useEffect } from "react";
 import { Switch, Route, NavLink } from "react-router-dom";
 import Item from "./components/Item";
 import FavItem from "./components/FavItem";
-import { fetchAnother, initialCurrent, addFav } from "./actions";
+import {
+  fetchAnother,
+  initialCurrent,
+  addFav,
+  getFavsFromLocalStorage,
+} from "./actions";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import axios from "axios";
@@ -20,6 +25,9 @@ export default function App() {
 
   function handleFetch() {
     dispatch(fetchAnother());
+  }
+  function initialLoad() {
+    dispatch(getFavsFromLocalStorage());
   }
 
   useEffect(() => {

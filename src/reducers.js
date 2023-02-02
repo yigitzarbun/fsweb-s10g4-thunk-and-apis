@@ -3,7 +3,6 @@ import {
   FAV_REMOVE,
   FETCH_START,
   FETCH_SUCCESS,
-  FETCH_LOADING,
   FETCH_ERROR,
   GET_FAVS_FROM_LS,
   INITIAL_CURRENT,
@@ -16,11 +15,10 @@ const initial = {
   loading: true,
 };
 function writeFavsToLocalStorage(state) {
-  localStorage.setItem("s10g4", JSON.stringify(state.favs));
+  window.localStorage.setItem("favs", JSON.stringify(state.favs));
 }
-
 function readFavsFromLocalStorage() {
-  return JSON.parse(localStorage.getItem("s10g4"));
+  return JSON.parse(window.localStorage.getItem("favs"));
 }
 
 export function myReducer(state = initial, action) {
@@ -30,10 +28,19 @@ export function myReducer(state = initial, action) {
         ...state,
         current: action.payload,
         loading: false,
+        favs: readFavsFromLocalStorage(),
       };
+
+    case GET_FAVS_FROM_LS:
+      return {
+        ...state,
+        favs: readFavsFromLocalStorage(),
+      };
+
     case FAV_ADD:
       let newFav = action.payload;
       let copyFavs = [...state.favs, newFav];
+      writeFavsToLocalStorage(state);
       return {
         ...state,
         favs: [...copyFavs],
@@ -61,9 +68,6 @@ export function myReducer(state = initial, action) {
         current: action.payload,
         loading: false,
       };
-
-    case FETCH_LOADING:
-      return state;
 
     case FETCH_ERROR:
       return {
