@@ -2,12 +2,8 @@ import React, { useEffect } from "react";
 import { Switch, Route, NavLink } from "react-router-dom";
 import Item from "./components/Item";
 import FavItem from "./components/FavItem";
-import {
-  fetchAnother,
-  initialCurrent,
-  addFav,
-  getFavsFromLocalStorage,
-} from "./actions";
+import { fetchAnother, initialCurrent, addFav } from "./actions";
+
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import axios from "axios";
@@ -26,15 +22,9 @@ export default function App() {
   function handleFetch() {
     dispatch(fetchAnother());
   }
-  function initialLoad() {
-    dispatch(getFavsFromLocalStorage());
-  }
 
   useEffect(() => {
-    axios
-      .get("https://catfact.ninja/fact")
-      .then((response) => dispatch(initialCurrent(response.data.fact)))
-      .catch((error) => console.log(error));
+    dispatch(initialCurrent());
   }, []);
 
   return (
@@ -71,12 +61,14 @@ export default function App() {
             >
               Başka bir tane
             </button>
-            <button
-              onClick={handleAddFav}
-              className="select-none px-4 py-2 bg-blue-700 hover:bg-blue-600 text-white"
-            >
-              Favorilere ekle
-            </button>
+            {!favs.includes(current) && (
+              <button
+                onClick={handleAddFav}
+                className="select-none px-4 py-2 bg-blue-700 hover:bg-blue-600 text-white"
+              >
+                Favorilere ekle
+              </button>
+            )}
           </div>
         </Route>
 
