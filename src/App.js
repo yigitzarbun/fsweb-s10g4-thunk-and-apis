@@ -6,7 +6,10 @@ import { fetchAnother, initialCurrent, addFav } from "./actions";
 
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import axios from "axios";
+import { ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
+import { Slide, Zoom, Flip, Bounce } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function App() {
   const dispatch = useDispatch();
@@ -17,6 +20,17 @@ export default function App() {
 
   function handleAddFav() {
     dispatch(addFav(current));
+    toast("Item was added to favs successfully!", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+      transition: Flip,
+    });
   }
 
   function handleFetch() {
@@ -46,7 +60,18 @@ export default function App() {
           Favoriler
         </NavLink>
       </nav>
-
+      <ToastContainer
+        position="bottom-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      ></ToastContainer>
       <Switch>
         <Route exact path="/">
           {loading && (
